@@ -1,10 +1,11 @@
 import './index.css';
-import { getToken } from './lib/spotify';
+import spotify from './lib/spotify';
 
 export default function App() {
   // console.log(process.env.REACT_APP_SPOTIFY_CLIENT_ID);
   // console.log(process.env.REACT_APP_SPOTIFY_CLIENT_SECRET);
-  getToken();
+  // getToken();
+  spotify.test();
   return (
     <div className="flex flex-col min-h-screen bg-gray-500 text-white">
       <main className="flex-1 p-8 mb-20">
