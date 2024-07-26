@@ -31,8 +31,11 @@ class SpotifyClient {
     spotify.token = response.data.access_token;
     return spotify;
   }
-  test() {
-    console.log(this.token);
+  async getPopularSongs() {
+    const responce = await axios.get('https://api.spotify.com/v1/playlists/37i9dQZF1DX9vYRBO9gjDe/tracks', {
+      headers: { Authorization: 'Bearer ' + this.token },
+    });
+    console.log(responce.data);
   }
 }
 
