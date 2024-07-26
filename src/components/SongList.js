@@ -2,7 +2,7 @@ import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export function SongList(props) {
-  console.log(props);
+  // console.log(props);
   if (props.isLoading)
     return (
       <div className="inset-0 flex justify-center items-center">
@@ -13,7 +13,7 @@ export function SongList(props) {
   return (
     <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-8">
       {props.songs.map((song) => {
-        console.log(song.album);
+        console.log(song);
             return (
               <div key={song.id} className="flex-none cursor-pointer ">
               <img
@@ -23,6 +23,7 @@ export function SongList(props) {
               />
               <h3 className="text-lg font-semibold">{song.name}</h3>
               <p className="text-gray-400">{song.artists[0].name}</p>
+              <p className="text-gray-400">発売日: {song.album.release_date}</p>
             </div>
           );
         })}
