@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { SongList } from './components/SongList';
 import './index.css';
 import spotify from './lib/spotify';
+import { Player } from './components/Player';
 
 export default function App() {
   // ローディング状態
@@ -32,10 +33,31 @@ export default function App() {
   const handleSongSelected = async (song) => {
     setSelectedSong(song);
     audioRef.current.src = song.preview_url;
+    audioRef.current.volume = 0.1;
     // console.log(audioRef.current.src);
+    playSong();
+    // console.log('handleSongSelectedをクリック');
+  }
+
+  // 曲の再生
+  const playSong = () => {
     audioRef.current.play();
     setIsPlay(true);
-    // console.log('handleSongSelectedをクリック');
+  }
+
+  // 曲の停止
+  const pauseSong = () => {
+    audioRef.current.pause();
+    setIsPlay(false);
+  }
+
+  // 曲の反転処理toggle
+  const toggleSong = () => {
+    if (isPlay) {
+      pauseSong(); // 再生中だから止める
+    } else {
+      playSong(); // 停止中だから走らせる
+    }
   }
 
   return (
@@ -49,6 +71,7 @@ export default function App() {
           <SongList isLoading={isLoading} songs={popularSongs} onSongSelected={handleSongSelected} />
         </section>
       </main>
+      {selectedSong != null && <Player song={selectedSong} isPlay={isPlay} onButtonClick={toggleSong} />}
       <audio ref={audioRef} />
     </div>
   );
