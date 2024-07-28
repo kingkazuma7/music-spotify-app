@@ -32,10 +32,15 @@ export default function App() {
 
   const handleSongSelected = async (song) => {
     setSelectedSong(song);
-    audioRef.current.src = song.preview_url;
-    audioRef.current.volume = 0.1;
-    // console.log(audioRef.current.src);
-    playSong();
+    if (song.preview_url != null) {
+      audioRef.current.src = song.preview_url;
+      audioRef.current.volume = 0.1;
+      // console.log(audioRef.current.src);
+      playSong();
+    } else {
+      console.log("楽曲なし");
+      pauseSong();
+    }
     // console.log('handleSongSelectedをクリック');
   }
 
