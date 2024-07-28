@@ -38,6 +38,14 @@ class SpotifyClient {
     return responce.data;
     // console.log(responce.data);
   }
+
+  async searchSongs(keyword) {
+    const responce = await axios.get('https://api.spotify.com/v1/search', {
+      headers: { Authorization: 'Bearer ' + this.token },
+      params: { q: keyword, type: 'track' },
+    });
+    return responce.data.tracks;
+  }
 }
 
 const spotify = await SpotifyClient.initialize();
