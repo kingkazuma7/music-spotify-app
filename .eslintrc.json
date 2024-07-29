@@ -1,0 +1,12 @@
+{
+  "extends": [
+    "plugin:react/recommended",
+    "airbnb",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "some-other-config-you-use",
+    "prettier",
+    "prettier/@typescript-eslint", // 追加
+    "prettier/react" // 追加
+  ]
+}
