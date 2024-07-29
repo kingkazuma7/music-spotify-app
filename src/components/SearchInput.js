@@ -2,7 +2,7 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export function SearchInput(props) {
-  console.log(props);
+  // console.log(props);
   return (
     <section className="mb-10">
       <input

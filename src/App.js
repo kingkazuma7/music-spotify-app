@@ -4,6 +4,7 @@ import './index.css';
 import spotify from './lib/spotify';
 import { Player } from './components/Player';
 import { SearchInput } from './components/SearchInput';
+import { Pagination } from './components/Pagination';
 
 export default function App() {
   // ローディング状態
@@ -20,7 +21,8 @@ export default function App() {
   const [searchedSongs, setSearchdSongs] = useState();
   // 検索結果があるか判定
   const isSearchedResult = searchedSongs != null
-
+  // ページ数
+  const limit = 20;
   const audioRef = useRef(null);
 
   // apiから曲データ取得(確認用)
@@ -46,7 +48,7 @@ export default function App() {
       // console.log(audioRef.current.src);
       playSong();
     } else {
-      console.log("楽曲なし");
+      // console.log("楽曲なし");
       pauseSong();
     }
     // console.log('handleSongSelectedをクリック');
@@ -80,12 +82,13 @@ export default function App() {
   }
 
   // 検索KWをAPIに投げる
-  const searchSongs = async () => {
-    // debugger
+  const searchSongs = async (page) => {
+    console.log(parseInt(page));
     setIsLoading(true);
-    const result = await spotify.searchSongs(keyword);
+    const offset = parseInt(page) ? (parseInt(page) - 1) * limit : 0;
+    const result = await spotify.searchSongs(keyword, limit, offset);
     console.log(result);
-    console.log(result.items);
+    // console.log(result.items);
     setSearchdSongs(result.items);
     setIsLoading(false);
   }
@@ -104,6 +107,7 @@ export default function App() {
             songs={isSearchedResult ? searchedSongs : popularSongs}
             onSongSelected={handleSongSelected}
           />
+          {isSearchedResult && <Pagination />}
         </section>
       </main>
       {selectedSong != null && <Player song={selectedSong} isPlay={isPlay} onButtonClick={toggleSong} />}
