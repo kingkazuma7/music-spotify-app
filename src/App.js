@@ -25,6 +25,10 @@ export default function App() {
   const limit = 20;
   // 現在のページ数
   const [page, setPage] = useState(1);
+  // 次ページがあるか
+  const [hasNext, setHasNext] = useState(false);
+  // 前ページがあるか
+  const [hasPrev, sethasPrev] = useState(false);
   const audioRef = useRef(null);
 
   // apiから曲データ取得(確認用)
@@ -79,7 +83,7 @@ export default function App() {
 
   // 検索inputの条件を受け取る
   const handleInputChange = (e) => {
-    // console.log(e.target.value);
+    // consdebuole.log(e.target.value);
     setKeyword(e.target.value);
   }
 
@@ -87,11 +91,14 @@ export default function App() {
   /**
    * 検索KWをAPIに投げる
    * ページが存在したらAPIにオフセット値をセット （例:pageが2なら、21〜40のデータ取得
+   * apiのnext,prevがあれば状態変数にセット
    */
   const searchSongs = async (page) => {
     setIsLoading(true);
     const offset = parseInt(page) ? (parseInt(page) - 1) * limit : 0;
     const result = await spotify.searchSongs(keyword, limit, offset);
+    setHasNext(result.next != null); // nextがあればhasNextがtrueになる
+    sethasPrev(result.previous != null); // previousがあればhasPrevがtrueになる
     // console.log(result);
     // console.log(result.items);
     setSearchdSongs(result.items);
@@ -102,7 +109,6 @@ export default function App() {
   const moveToNext = async () => {
     console.log("next click");
     const nextPage = page + 1;
-    debugger
     await searchSongs(nextPage);
     setPage(nextPage);
   }
@@ -129,7 +135,11 @@ export default function App() {
             songs={isSearchedResult ? searchedSongs : popularSongs}
             onSongSelected={handleSongSelected}
           />
-          {isSearchedResult && <Pagination onPrev={prevToNext} onNext={moveToNext} />}
+          {isSearchedResult &&
+            <Pagination
+              onPrev={hasPrev ? prevToNext : null}
+              onNext={hasNext ? moveToNext : null}
+            />}
         </section>
       </main>
       {selectedSong != null && <Player song={selectedSong} isPlay={isPlay} onButtonClick={toggleSong} />}
