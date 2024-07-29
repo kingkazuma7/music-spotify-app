@@ -14,6 +14,13 @@ export default function App() {
   const [isPlay, setIsPlay] = useState(false);
   // 選択した曲の情報
   const [selectedSong, setSelectedSong] = useState();
+  // 検索KW
+  const [keyword, setKeyword] = useState('');
+  // 検索結果
+  const [searchedSongs, setSearchdSongs] = useState();
+  // 検索結果があるか判定
+  const isSearchedResult = searchedSongs != null
+
   const audioRef = useRef(null);
 
   // apiから曲データ取得(確認用)
@@ -66,16 +73,37 @@ export default function App() {
     }
   }
 
+  // 検索inputの条件を受け取る
+  const handleInputChange = (e) => {
+    // console.log(e.target.value);
+    setKeyword(e.target.value);
+  }
+
+  // 検索KWをAPIに投げる
+  const searchSongs = async () => {
+    // debugger
+    setIsLoading(true);
+    const result = await spotify.searchSongs(keyword);
+    console.log(result);
+    console.log(result.items);
+    setSearchdSongs(result.items);
+    setIsLoading(false);
+  }
+
   return (
     <div className="flex flex-col min-h-screen bg-gray-500 text-white">
       <main className="flex-1 p-8 mb-20">
         <header className="flex justify-between items-center mb-10">
           <h1 className="text-4xl font-bold">Music App</h1>
         </header>
-        <SearchInput />
+        <SearchInput onInputChange={handleInputChange} onSubmit={searchSongs} />
         <section>
-          <h2 className="text-2xl font-semibold mb-5">Popular Songs</h2>
-          <SongList isLoading={isLoading} songs={popularSongs} onSongSelected={handleSongSelected} />
+          <h2 className="text-2xl font-semibold mb-5">{isSearchedResult ? 'Searched Results' : 'Popular Songs'}</h2>
+          <SongList
+            isLoading={isLoading}
+            songs={isSearchedResult ? searchedSongs : popularSongs}
+            onSongSelected={handleSongSelected}
+          />
         </section>
       </main>
       {selectedSong != null && <Player song={selectedSong} isPlay={isPlay} onButtonClick={toggleSong} />}
