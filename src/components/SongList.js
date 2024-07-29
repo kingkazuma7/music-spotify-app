@@ -14,22 +14,23 @@ export function SongList(props) {
     <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-8">
       {props.songs.map((song) => {
         // console.log(song);
-            return (
-              <div
-                onClick={() => props.onSongSelected(song)}
-                key={song.id}
-                className="flex-none cursor-pointer">
-              <img
-                alt="thumbnail"
-                src={song.album.images[0].url}
-                className="mb-2 rounded"
-              />
-              <h3 className="text-lg font-semibold">{song.name}</h3>
-              <p className="text-gray-400">{song.artists[0].name}</p>
-              <p className="text-gray-400">発売日: {song.album.release_date}</p>
-            </div>
-          );
-        })}
+        return (
+          <div
+            onClick={() => props.onSongSelected(song)}
+            key={song.id}
+            className="flex-none cursor-pointer"
+          >
+            <img
+              alt="thumbnail"
+              src={song.album.images[0].url}
+              className="mb-2 rounded"
+            />
+            <h3 className="text-lg font-semibold">{song.name}</h3>
+            <p className="text-gray-400">{song.artists[0].name}</p>
+            <p className="text-gray-400">発売日: {song.album.release_date}</p>
+          </div>
+        );
+      })}
     </div>
   );
 }
